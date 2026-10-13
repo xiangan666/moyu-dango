@@ -1,0 +1,9 @@
+<resources>
+    <style name="AppBaseTheme" parent="@style/ApplicationBaseTheme" />
+    <style name="ApplicationBaseTheme" parent="@style/Theme.Material3.DynamicColors.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorAccent">#FF4081</item>
+        <item name="colorControlNormal">#ffffff</item>
+    </style>
+</resources>

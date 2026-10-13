@@ -1,0 +1,31 @@
+# 行尾与文本规则：仓库统一 LF，Windows 检出按需转换
+* text=auto eol=lf
+
+# 二进制文件不做行尾转换，也不参与 diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.apk binary
+*.aab binary
+*.keystore binary
+*.jks binary
+
+# 明确文本类型（便于 GitHub 语言统计与 diff）
+*.java text
+*.kts text
+*.gradle text
+*.properties text
+*.xml text
+*.htm text
+*.js text
+*.css text
+*.svg text
+*.md text
+
+# Windows 批处理必须是 CRLF，否则 goto/label 解析会出错
+*.bat text eol=crlf
+*.cmd text eol=crlf

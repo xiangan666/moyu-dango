@@ -1,0 +1,24 @@
+# Gradle / Android 构建产物
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+.cxx/
+*.iml
+.idea/
+
+# 打包与签名产物（不要提交私钥）
+*.apk
+*.aab
+*.jks
+*.keystore
+*.hprof
+
+# 本地工具产生的文件
+.taixu-project.properties
+.taixu/logs/
+
+# 系统文件
+.DS_Store
+Thumbs.db

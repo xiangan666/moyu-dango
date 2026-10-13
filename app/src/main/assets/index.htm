@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#fff9f2">
+<meta name="author" content="相安">
+<meta name="contact" content="3199912548@qq.com">
+<meta name="description" content="相安开发的摸鱼团子：收藏照片、全屏裁剪、光线与距离遮挡调暗、双击切换亮度，给忙碌生活一点甜。">
+<title>摸鱼团子 · 给自己一点甜</title>
+<link rel="stylesheet" href="res/css/index.css">
+</head>
+<body>
+<div id="home" class="app-shell">
+  <header class="topbar"><a class="brand" href="#home" aria-label="摸鱼团子首页"><span class="brand-face">◡</span><span>摸鱼团子<small>MOYU DANGO</small></span></a><button class="icon-button" id="settingsButton" aria-label="打开设置"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></button></header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy"><span class="eyebrow"><i></i> 团子的小小休息站</span><h1>忙里偷闲，<br>也要甜一点<span>✦</span></h1><p id="dailyMessage">世界很忙，团子陪你慢半拍。</p><span class="hero-sticker">今日宜 · 松弛一下</span></div>
+      <div class="hero-art" aria-hidden="true"><img src="res/img/dango.svg" alt=""><span class="spark spark-a">✧</span><span class="spark spark-b">✦</span><span class="art-bubble">偷偷充个电 ♡</span></div>
+    </section>
+    <section class="stats-strip" aria-label="摸鱼统计"><div><span class="stat-icon">◷</span><span><b id="todayMinutes">0 分钟</b><small>今天的小休息</small></span></div><div><span class="stat-icon mint">♡</span><span><b id="totalSessions">0 次</b><small id="levelLabel">初来乍到的小团子</small></span></div></section>
+    <section class="section presets-section">
+      <div class="section-heading"><div><h2>我的小预设 <span id="presetCount" class="count-tag">5 / 5</span></h2><p>选一张喜欢的，给自己放个小假</p></div><button class="text-button" id="editButton">管理</button></div>
+      <div id="presetGrid" class="preset-grid" aria-label="五个照片预设"></div>
+      <div class="import-actions"><button id="importButton" class="import-button"><span>＋</span> 从相册加入照片 <small>相册全部访问</small></button><button id="fileImportButton" class="import-button file-import-button"><span>▣</span> 从文件管理器选择 <small>MT 管理器等</small></button></div>
+      <input type="file" id="photoInput" accept="image/*" hidden>
+    </section>
+    <section class="little-tools"><button id="randomButton"><span class="tool-icon">⚄</span><span>帮我挑一张<small>把纠结交给团子</small></span><b>↗</b></button><button id="timerButton"><span class="tool-icon peach">◷</span><span id="timerLabel">不限时休息<small>也可以定个小闹钟</small></span><b>↗</b></button></section>
+    <section class="section history-section"><div class="section-heading"><div><h2>最近的偷闲 <span class="count-tag">最近 5 次</span></h2><p>每一次小休息，都值得被记住</p></div><button id="clearHistoryButton" class="text-button">清空</button></div><div id="historyList" class="history-list"></div></section>
+    <div class="gentle-note"><span>☁</span><p>允许自己停一小会儿<br><small>团子替你保管这一刻的松弛</small></p><span>✧</span></div>
+    <button id="developerAboutButton" class="developer-credit" aria-label="查看项目与开发者介绍"><span>♡</span> 开发者 · <b>相安</b><small>用一点代码，捏一份小快乐 ↗</small></button>
+  </main>
+  <footer class="start-dock"><div class="selection-caption"><span class="selection-dot"></span><span id="selectedLabel">已选：团子放空中</span><button id="fitButton" aria-label="切换照片显示模式">铺满屏幕</button></div><button id="startButton" class="start-button"><svg viewBox="0 0 24 24"><path d="m9 5 10 7-10 7Z"/></svg>开始摸鱼<span>给自己充个电</span></button><p>遮挡检测调暗 · 双击切换 · 设置可分别开关</p></footer>
+</div>
+<div id="developerWelcome" class="developer-welcome" hidden>
+  <div id="developerWelcomeBackdrop" class="developer-welcome-backdrop" aria-hidden="true"></div>
+  <section class="developer-card" role="dialog" aria-modal="true" aria-labelledby="developerWelcomeTitle" aria-describedby="developerWelcomeDescription" tabindex="-1">
+    <button id="developerWelcomeClose" class="developer-close" aria-label="关闭开发者介绍">×</button>
+    <div class="developer-card-art" aria-hidden="true"><span class="developer-ticket">摸鱼许可证 · 今日有效</span><span class="developer-spark one">✧</span><img src="res/img/dango.svg" alt=""><span class="developer-spark two">♡</span><span class="developer-art-caption">团子上线，快乐待命！</span></div>
+    <div class="developer-card-content"><p class="developer-eyebrow">MOYU DANGO · A LITTLE SWEET BREAK</p><h2 id="developerWelcomeTitle">欢迎来到<br>团子的偷闲小窝<span>✦</span></h2><p id="developerWelcomeDescription" class="developer-project">这是一个把照片变成休息小角落的可爱项目。收藏喜欢的照片，裁成全屏；通过光线或距离感应发现遮挡，让亮度归零；双击在 0 与原亮度之间切换，偷偷给自己充个电。</p>
+      <div class="developer-signature"><span class="developer-avatar" aria-hidden="true">安</span><div><small>这份小快乐的开发者</small><b>相安 <span>独立开发 · 温柔出品</span></b></div><span class="developer-seal" aria-hidden="true">亲手<br>捏制</span></div>
+      <a id="developerContact" class="developer-contact" href="mailto:3199912548@qq.com?subject=%E6%91%B8%E9%B1%BC%E5%9B%A2%E5%AD%90%E5%8F%8D%E9%A6%88"><span aria-hidden="true">✉</span><span><small>有想法、建议或小虫虫，写信给相安</small><b>3199912548@qq.com</b></span><span class="developer-contact-arrow" aria-hidden="true">↗</span></a>
+      <p class="developer-small-note">每次见面，都给你发一张快乐入场券 ♡</p><button id="developerWelcomeStart" class="developer-start">知道啦，开始摸鱼 <span>↗</span></button><p class="developer-card-foot">休息是为了充电，记得也让眼睛歇一歇</p>
+    </div>
+  </section>
+</div>
+<section id="viewer" class="viewer" hidden aria-label="全屏照片"><img id="viewerImage" alt="全屏预设照片" draggable="false"><div id="viewerHint" class="viewer-hint">遮挡只调暗 · 双击：亮度 0 ↔ 原值<br><small>长按照片打开菜单 · 返回规则可在设置里调整</small></div><div id="viewerControls" class="viewer-controls" hidden><div class="viewer-status"><span id="sessionClock">00:00</span><span id="brightnessStatus">正常亮度</span></div><div class="viewer-actions"><button id="brightnessButton">切换亮度</button><button id="viewerSettingsButton">设置</button><button id="viewerFitButton">切换显示</button><button id="exitButton">结束休息 ↗</button></div></div></section>
+<section id="settingsPage" class="settings-page" hidden aria-label="团子的设置">
+  <header class="settings-header"><button id="settingsBackButton" aria-label="返回">‹</button><div><h2>团子的小偏好</h2><p>每一份小习惯，都由你来定</p></div><span>♡</span></header>
+  <main id="settingsBody" class="settings-body"></main>
+</section>
+<div id="sheetBackdrop" class="sheet-backdrop" hidden><section id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="sheet-handle"></div><div class="sheet-heading"><h2 id="sheetTitle"></h2><button id="closeSheetButton" class="close-button" aria-label="关闭">×</button></div><div id="sheetBody"></div></section></div>
+<section id="cropper" class="cropper" hidden aria-label="裁剪照片为全屏比例">
+  <header class="crop-header"><button id="cropCancelButton">取消</button><div><h2>裁一份全屏小快乐</h2><p id="cropRatioLabel"></p></div><span>♡</span></header>
+  <div class="crop-body"><div id="cropStage" class="crop-stage"><img id="cropImage" alt="裁剪预览" draggable="false"><div class="crop-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div><p class="crop-instruction">拖动构图 · 双指缩放 · 保留喜欢的细节</p></div>
+  <footer class="crop-footer"><div class="crop-zoom"><span>缩放</span><input id="cropZoom" type="range" min="1" max="6" step="0.01" value="1" aria-label="照片裁剪缩放"><span id="cropZoomValue">1.0×</span></div><div class="crop-tools"><button id="cropRotateButton">↻ 旋转 90°</button><button id="cropResetButton">重新居中</button><span id="cropResolution"></span></div><p id="cropQualityNote" class="crop-quality-note"></p><button id="cropSaveButton" class="sheet-primary">裁好啦，保存这张</button></footer>
+</section>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="res/js/core.js"></script>
+<script src="res/js/crop.js"></script>
+<script src="res/js/cropper.js"></script>
+<script src="res/js/permissions.js"></script>
+<script src="res/js/welcome.js"></script>
+<script src="res/js/index.js"></script>
+</body>
+</html>
