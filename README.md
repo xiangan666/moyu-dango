@@ -1,7 +1,7 @@
 # 摸鱼团子 1.6
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Android CI](https://github.com/OWNER/REPO/actions/workflows/android.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/android.yml)
+[![Android CI](https://github.com/lovelanshiyi/moyu-dango/actions/workflows/android.yml/badge.svg)](https://github.com/lovelanshiyi/moyu-dango/actions/workflows/android.yml)
 
 > 一个本机运行的 Android「摸鱼陪伴」小应用：挑一张团子插图进全屏休息，靠光线 / 距离传感器自动把屏幕调暗，
 > 双击在原始亮度与全黑之间切换，结束后给你一张统计卡片。**不联网，数据全在本机。**
