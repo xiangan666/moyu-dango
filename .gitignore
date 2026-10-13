@@ -15,6 +15,9 @@ captures/
 *.keystore
 *.hprof
 
+# 签名密钥与密码（绝不入库）
+keystore/
+
 # 本地工具产生的文件
 .taixu-project.properties
 .taixu/logs/

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
 }
@@ -5,6 +7,17 @@ plugins {
 // 摸鱼团子 1.6 · 本地 Android 工程
 // 网页资源 src/main/assets | 原生能力 src/main/java/com/dango | 清单与资源 src/main
 // JS 与原生通过 MainActivity 注册的 DangoNative 桥接，不依赖任何外部运行器。
+
+// release 签名配置从 keystore/keystore.properties 读取（该目录已在 .gitignore 中，绝不入库）。
+// 文件不存在时（例如他人克隆仓库、CI 只构建 debug）自动跳过签名，构建仍可进行。
+val keystorePropertiesFile = rootProject.file("keystore/keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseSigning = keystorePropertiesFile.exists()
+
 android {
     namespace = "com.dango.moyu"
     compileSdk = 34
@@ -19,8 +32,21 @@ android {
         versionName = "1.6"
 
         ndk {
-            // 只发布 ARM64：不过滤会把依赖 AAR 携带的 x86/x86_64 原生库打进 APK
+            // 当前依赖（androidx.core / material）不携带原生库，APK 实测无 lib/，并未锁定 ABI。
+            // 保留过滤是为了将来引入带 .so 的依赖时自动只产出 arm64；需要多架构时调整此处。
             abiFilters += "arm64-v8a"
+        }
+    }
+
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storeType = keystoreProperties.getProperty("storeType") ?: "PKCS12"
+            }
         }
     }
 
@@ -32,6 +58,9 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 }

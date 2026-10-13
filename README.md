@@ -20,7 +20,7 @@
 | 应用名称 | 摸鱼团子 |
 | applicationId / namespace | `com.dango.moyu` |
 | 版本 | 1.6（versionCode 100007） |
-| 运行环境 | Android 6.0+（minSdk 23），targetSdk 34，仅 `arm64-v8a` |
+| 运行环境 | Android 6.0+（minSdk 23），targetSdk 34；依赖不含原生库，APK 未锁定 ABI |
 | 作者 | 相安　3199912548@qq.com |
 | 许可证 | [MIT](LICENSE) |
 
@@ -36,11 +36,12 @@
 
 ## 下载与安装
 
-- 具备 **arm64-v8a** 的 Android 6.0+ 设备（绝大多数现代手机）。
-- 从 [Releases](../../releases) 下载 `app-debug.apk`（或自签名的 release 包）后安装：
+- Android 6.0+ 设备。依赖中不含原生库，APK 未锁定 ABI（仅在 arm64 真机上验证过）。
+- 从 [Releases](../../releases) 下载**签名版** `app-release.apk` 后安装：
   ```bash
-  adb install -r app-debug.apk
+  adb install -r app-release.apk
   ```
+- 若安装过早期版本，因 applicationId 已变更为 `com.dango.moyu`，**需先卸载旧版**（本地照片会一并清空）。
 - 由于声明了 `MANAGE_EXTERNAL_STORAGE` 与 `WRITE_SETTINGS`，首次使用需在设置页按需逐项授权（见下文「权限」）。
 
 ## 自行构建
@@ -57,16 +58,28 @@
 
 ```bash
 git clone <仓库地址> && cd <仓库目录>
-./gradlew assembleDebug
-# 产物：app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleDebug     # 调试包：app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease   # 发布包：app/build/outputs/apk/release/app-release.apk
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
+
+`assembleRelease` 的签名从 `keystore/keystore.properties` 读取（该目录已被 `.gitignore` 忽略）：
+
+```properties
+storeFile=keystore/moyu-dango-release.jks
+storePassword=<你的密码>
+keyAlias=moyu-dango
+keyPassword=<你的密码>
+storeType=PKCS12
+```
+
+没有该文件时（他人克隆本仓库、CI）会跳过签名，构建照常进行、只是产物未签名——**发布用的密钥请自行生成并妥善离线备份，一旦丢失将无法再发布可覆盖升级的版本**。
 
 说明：
 
 - `build-tools 35.0.0` 已在 `app/build.gradle.kts` 中显式指定（`compileSdk 34` 默认要 34.0.0 版 build-tools，很多 SDK 安装里没有）。
 - `settings.gradle.kts` 在**非 CI** 环境会优先走阿里云镜像加速，GitHub Actions 等 `CI=true` 的环境自动改用官方仓库。
-- 只输出 `arm64-v8a`（`abiFilters`）。若要支持其它 ABI，改 `app/build.gradle.kts` 并自行确认依赖里的原生库覆盖到对应架构。
+- 依赖（`androidx.core` / `material`）当前不含 `.so`，APK 里没有 `lib/` 目录，因此并未锁定 ABI。`app/build.gradle.kts` 预留了 `abiFilters = arm64-v8a`：将来引入带原生库的依赖时会自动只产出 arm64。
 - 首次构建需下载依赖，约 3–5 分钟；之后增量构建在 10 秒级。
 
 ## 使用说明
@@ -91,7 +104,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 2. 距离通道受硬件位置与精度限制，部分设备只返回远 / 近。
 3. 传感器读数、系统亮度实写与渲染表现需真机验收，模拟器上验证不了。
 4. `MANAGE_EXTERNAL_STORAGE` 属敏感权限，**仅适合自用 / 侧载**，上架 Google Play 会被拒。
-5. 仅 `arm64-v8a` 一种 ABI，不适用于 32 位或 x86 设备。
+5. 仅在 arm64 真机上验证过；APK 未锁定 ABI，32 位 / x86 设备理论可安装但未测试。
 6. 卸载应用会清空已导入照片与授权状态；旧版本曾被压缩保存过的照片无法恢复画质，需重新导入。
 
 ## 权限
