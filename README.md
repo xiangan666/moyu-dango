@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Android CI](https://github.com/xiangan666/moyu-dango/actions/workflows/android.yml/badge.svg)](https://github.com/xiangan666/moyu-dango/actions/workflows/android.yml)
+[![Release](https://github.com/xiangan666/moyu-dango/actions/workflows/release.yml/badge.svg)](https://github.com/xiangan666/moyu-dango/actions/workflows/release.yml)
 
 > 一个本机运行的 Android「摸鱼陪伴」小应用：挑一张团子插图进全屏休息，靠光线 / 距离传感器自动把屏幕调暗，
 > 双击在原始亮度与全黑之间切换，结束后给你一张统计卡片。**不联网，数据全在本机。**
@@ -81,6 +82,35 @@ storeType=PKCS12
 - `settings.gradle.kts` 在**非 CI** 环境会优先走阿里云镜像加速，GitHub Actions 等 `CI=true` 的环境自动改用官方仓库。
 - 依赖（`androidx.core` / `material`）当前不含 `.so`，APK 里没有 `lib/` 目录，因此并未锁定 ABI。`app/build.gradle.kts` 预留了 `abiFilters = arm64-v8a`：将来引入带原生库的依赖时会自动只产出 arm64。
 - 首次构建需下载依赖，约 3–5 分钟；之后增量构建在 10 秒级。
+
+## 发布流程（CI 自动签名）
+
+发布交给 `.github/workflows/release.yml`，**只需要打 tag**：
+
+```bash
+# 1. 先把版本号与更新日志改好
+#    app/build.gradle.kts 的 versionCode / versionName，并补 CHANGELOG.md
+git commit -am "release: 1.7"
+git push
+# 2. 打 tag 触发发布（tag 用 vX.Y，与 versionName 对齐）
+git tag v1.7
+git push origin v1.7
+```
+
+workflow 会自动完成：从仓库 Secrets 还原签名密钥 → `assembleRelease` → `apksigner` 校验并打印证书指纹与 APK 的 SHA-256 → 上传 APK artifact → 创建 Release 并附上签名版 `app-release.apk`（若同名 Release 已存在，则替换其中的 APK 附件）。
+
+签名相关的仓库 Secrets（**他人 fork 后需自备；本仓库已配置**）：
+
+| Secret | 内容 | 写入方式 |
+|---|---|---|
+| `SIGNING_KEYSTORE_BASE64` | 密钥库文件的 base64 | `base64 -w0 xxx.jks \| gh secret set SIGNING_KEYSTORE_BASE64` |
+| `SIGNING_STORE_PASSWORD` | 密钥库密码 | `gh secret set SIGNING_STORE_PASSWORD` |
+| `SIGNING_KEY_ALIAS` | 密钥别名 | `gh secret set SIGNING_KEY_ALIAS` |
+| `SIGNING_KEY_PASSWORD` | 密钥密码 | `gh secret set SIGNING_KEY_PASSWORD` |
+
+也可在 Actions 页面手动触发 Release workflow（`workflow_dispatch`）：它只构建、校验签名并上传 artifact，**不会创建 Release**，适合发版前自查。
+
+> 密钥一旦丢失，就无法再发布可覆盖升级的新版本；请把 `.jks` 与密码离线备份（密码管理器 + 冷备份）。若怀疑泄露，只能换包名重新发布。
 
 ## 使用说明
 
