@@ -28,8 +28,8 @@ android {
         minSdk = 23
         targetSdk = 34
         // 约定：100000 + 版本标识
-        versionCode = 100007
-        versionName = "1.6"
+        versionCode = 100008
+        versionName = "1.6.1"
 
         ndk {
             // 当前依赖（androidx.core / material）不携带原生库，APK 实测无 lib/，并未锁定 ABI。

@@ -1,4 +1,4 @@
-# 摸鱼团子 1.6
+# 摸鱼团子
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Android CI](https://github.com/xiangan666/moyu-dango/actions/workflows/android.yml/badge.svg)](https://github.com/xiangan666/moyu-dango/actions/workflows/android.yml)
@@ -20,7 +20,7 @@
 |---|---|
 | 应用名称 | 摸鱼团子 |
 | applicationId / namespace | `com.dango.moyu` |
-| 版本 | 1.6（versionCode 100007） |
+| 版本 | 1.6.1（versionCode 100008） |
 | 运行环境 | Android 6.0+（minSdk 23），targetSdk 34；依赖不含原生库，APK 未锁定 ABI |
 | 作者 | 相安　3199912548@qq.com |
 | 许可证 | [MIT](LICENSE) |
